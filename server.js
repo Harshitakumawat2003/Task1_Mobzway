@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoURI = 'mongodb+srv://jainrohit0002:qwert12345@cluster0.hpx1zq5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = "mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/";
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, {
