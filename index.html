@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+  </head>
+  <body>
+    <h1>Create User</h1>
+    <form id="userForm">
+      <input
+        type="text"
+        id="firstName"
+        name="firstName"
+        placeholder="First Name"
+        required
+      />
+      <input
+        type="text"
+        id="lastName"
+        name="lastName"
+        placeholder="Last Name"
+        required
+      />
+      <input
+        type="text"
+        id="mobileNo"
+        name="mobileNo"
+        placeholder="Mobile Number"
+        required
+      />
+      <input
+        type="email"
+        id="emailId"
+        name="emailId"
+        placeholder="Email"
+        required
+      />
+      <input type="text" id="street" name="street" placeholder="Street" />
+      <input type="text" id="city" name="city" placeholder="City" />
+      <input type="text" id="state" name="state" placeholder="State" />
+      <input type="text" id="country" name="country" placeholder="Country" />
+      <input
+        type="text"
+        id="loginId"
+        name="loginId"
+        placeholder="Login ID"
+        required
+      />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+
+    <h1>List of Users</h1>
+    <div id="userTable"></div>
+
+    <script>
+      async function fetchUsers() {
+        try {
+          const response = await fetch("http://localhost:3000/api/users");
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const users = await response.json();
+          let table = `
+                <table border="1">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile No</th>
+                        <th>Email Id</th>
+                        <th>Address</th>
+                        <th>Login ID</th>
+                    </tr>`;
+          users.forEach((user) => {
+            table += `
+                    <tr>
+                        <td>${user.firstName}</td>
+                        <td>${user.lastName}</td>
+                        <td>${user.mobileNo}</td>
+                        <td>${user.emailId}</td>
+                        <td>${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.country}</td>
+                        <td>${user.loginId}</td>
+                    </tr>`;
+          });
+          table += "</table>";
+          document.getElementById("userTable").innerHTML = table;
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          alert("Error fetching users!");
+        }
+      }
+
+      // Event listener for form submission
+      document
+        .getElementById("userForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const formData = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            mobileNo: document.getElementById("mobileNo").value,
+            emailId: document.getElementById("emailId").value,
+            address: {
+              street: document.getElementById("street").value,
+              city: document.getElementById("city").value,
+              state: document.getElementById("state").value,
+              country: document.getElementById("country").value,
+            },
+            loginId: document.getElementById("loginId").value,
+            password: document.getElementById("password").value,
+          };
+
+          try {
+            const response = await fetch("http://localhost:3000/api/users", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              console.log("User created:", user);
+              // Fetch and display users after successful creation
+              fetchUsers();
+            } else {
+              const errorText = await response.text();
+              console.error("Error:", errorText);
+            }
+          } catch (error) {
+            console.error("Request failed:", error);
+          }
+        });
+
+      // Fetch users on page load
+      fetchUsers();
+    </script>
+  </body>
+</html>
