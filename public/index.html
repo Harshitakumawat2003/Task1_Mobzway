@@ -1,4 +1,4 @@
-
+<!-- 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -114,6 +114,261 @@
             console.error("Request failed:", error);
             alert("Request failed: " + error.message); // Display error message
           }
+        });
+    </script>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .error-message {
+        color: red;
+        font-size: 12px;
+        position: absolute;
+        top: -20px;
+        left: 0;
+        display: none;
+      }
+      .form-group {
+        position: relative;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="head">
+        <h1>Create User</h1>
+      </div>
+      <div class="form">
+        <form id="userForm">
+          <div class="form-group">
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="First Name"
+              required
+              minlength="2"
+              pattern="[A-Za-z]+"
+              title="First Name should contain only letters and at least 2 characters."
+            />
+            <div class="error-message" id="firstNameError"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Last Name"
+              required
+              minlength="2"
+              pattern="[A-Za-z]+"
+              title="Last Name should contain only letters and at least 2 characters."
+            />
+            <div class="error-message" id="lastNameError"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="mobileNo"
+              name="mobileNo"
+              placeholder="Mobile Number"
+              required
+            />
+            <div class="error-message" id="mobileNoError"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="email"
+              id="emailId"
+              name="emailId"
+              placeholder="Email"
+              required
+            />
+            <div class="error-message" id="emailIdError"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="street"
+              name="street"
+              placeholder="Street"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="city"
+              name="city"
+              placeholder="City"
+              required
+              pattern="[A-Za-z\s]+"
+              title="City should contain only letters."
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="state"
+              name="state"
+              placeholder="State"
+              required
+              pattern="[A-Za-z\s]+"
+              title="State should contain only letters."
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="country"
+              name="country"
+              placeholder="Country"
+              required
+              pattern="[A-Za-z\s]+"
+              title="Country should contain only letters."
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              id="loginId"
+              name="loginId"
+              placeholder="Login ID"
+              required
+            />
+            <div class="error-message" id="loginIdError"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <div class="error-message" id="passwordError"></div>
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Function to show validation errors
+      function showError(element, message) {
+        const errorElement = document.getElementById(element + "Error");
+        errorElement.innerText = message;
+        errorElement.style.display = "block";
+      }
+
+      // Function to hide validation errors
+      function hideError(element) {
+        const errorElement = document.getElementById(element + "Error");
+        errorElement.style.display = "none";
+      }
+
+      // Event listener for form submission
+      document
+        .getElementById("userForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Validate Mobile Number
+          const mobileNo = document.getElementById("mobileNo").value;
+          if (!/^\d{10}$/.test(mobileNo)) {
+            showError("mobileNo", "Mobile Number should be a 10-digit number.");
+            return;
+          } else {
+            hideError("mobileNo");
+          }
+
+          // Validate Email
+          const emailId = document.getElementById("emailId").value;
+          const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (!emailPattern.test(emailId)) {
+            showError("emailId", "Please enter a valid email address.");
+            return;
+          } else {
+            hideError("emailId");
+          }
+
+          // Validate Login ID
+          const loginId = document.getElementById("loginId").value;
+          if (!/^[a-zA-Z0-9]{8,}$/.test(loginId)) {
+            showError("loginId", "Login ID should be at least 8 characters long and alphanumeric.");
+            return;
+          } else {
+            hideError("loginId");
+          }
+
+          // Validate Password
+          const password = document.getElementById("password").value;
+          const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+          if (!passwordPattern.test(password)) {
+            showError(
+              "password",
+              "Password must be at least 6 characters long, contain 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."
+            );
+            return;
+          } else {
+            hideError("password");
+          }
+
+          // If all validations pass, proceed with form submission
+          const formData = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            mobileNo: mobileNo,
+            emailId: emailId,
+            address: {
+              street: document.getElementById("street").value,
+              city: document.getElementById("city").value,
+              state: document.getElementById("state").value,
+              country: document.getElementById("country").value,
+            },
+            loginId: loginId,
+            password: password,
+          };
+
+          fetch("http://localhost:5000/api/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              }
+              return response.text().then((text) => {
+                throw new Error(text);
+              });
+            })
+            .then((user) => {
+              console.log("User created:", user);
+              alert("User created successfully!");
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Error: " + error.message); // Display error message
+            });
         });
     </script>
   </body>
