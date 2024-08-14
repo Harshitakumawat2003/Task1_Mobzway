@@ -104,13 +104,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 
-const mongoURI =
-  // "mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/";
-  "mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test";
+// const mongoURI =
+//   // "mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/";
+//   ;
 
 // Connect to MongoDB
 mongoose
-  .connect(mongoURI, {})
+  .connect("mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test", {})
   .then(() => {
     console.log("Database connected successfully");
   })
