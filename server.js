@@ -110,13 +110,27 @@ const path = require("path");
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test", {})
+  .connect(
+    "mongodb+srv://harshitakumawat:hkumawat26@cluster0.abiwdnd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test",
+    {}
+  )
   .then(() => {
     console.log("Database connected successfully");
   })
   .catch((error) => {
     console.error("Database connection failed:", error);
   });
+
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "https://your-frontend-domain.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
+
+app.use(cors());
 
 const app = express();
 app.use(bodyParser.json());
